@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/pic"
+    android:gravity="center"
+    >
+    <Button
+        android:id="@+id/start_button"
+        style="@style/MainActivityButton"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:text="@string/start_button"
+
+        />
+    <Button
+        android:id="@+id/quit_button"
+        style="@style/MainActivityButton"
+        android:layout_below="@id/start_button"
+        android:text="@string/quit_button"
+
+        />
+
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:src="@mipmap/pic"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal">
+        <Button
+            style="@style/PickActivityButton"
+            android:background="@color/colorAccent"
+            android:text="@string/from_camera" />
+
+        <Button
+            style="@style/PickActivityButton"
+            android:background="@color/colorPrimary"
+            android:text="@string/from_album" />
+
+        <Button
+            style="@style/PickActivityButton"
+            android:background="@android:color/holo_blue_bright"
+            android:text="@string/next_step"
+            android:enabled="false" />
+    </LinearLayout>
+
+
+</LinearLayout>
+

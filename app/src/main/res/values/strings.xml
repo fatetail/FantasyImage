@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fantasy-Image</string>
+    <string name="start_button">开启幻图之旅</string>
+    <string name="quit_button">退出程序</string>
+    <string name="from_camera">拍照</string>
+    <string name="from_album">从相册中选取</string>
+    <string name="next_step">下一步</string>
+</resources>
