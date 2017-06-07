@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 public class PickImageActivity extends AppCompatActivity {
@@ -29,10 +30,13 @@ public class PickImageActivity extends AppCompatActivity {
     private ImageView pick_image_view;
 
     /*声明跳转Activity返回码*/
-    private static final int REQUEST_FROM_ALBUM = 0;
-    private static final int REQUEST_FROM_CAMERA = 1;
+    private static final int REQUEST_FROM_ALBUM = 22;
+    private static final int REQUEST_FROM_CAMERA = 23;
 
     private Uri img_uri;
+
+    private String sdPath;
+    private String picPath;
 
     /*获取XML中的控件*/
     private void InitViewById() {
@@ -55,7 +59,7 @@ public class PickImageActivity extends AppCompatActivity {
         album_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File file = new File(Environment.getExternalStorageDirectory(),"picture.jpg");
+                File file = new File(picPath);
                 try {
                     if (file.exists()) {
                         file.delete();
@@ -64,19 +68,22 @@ public class PickImageActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                Intent album_intent = new Intent(Intent.ACTION_PICK);
+                album_intent.setType("image/*");
+                startActivityForResult(album_intent,REQUEST_FROM_ALBUM);
+                /*
                 img_uri = Uri.fromFile(file);
                 Intent album_intent = new Intent("android.intent.action.GET_CONTENT");
-                album_intent.setType("image/*");
                 album_intent.putExtra(MediaStore.EXTRA_OUTPUT,img_uri);
                 startActivityForResult(album_intent,REQUEST_FROM_ALBUM);
+                */
             }
         });
 
         camera_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File file = new File(Environment.getExternalStorageDirectory(), "picture2.jpg");
+                File file = new File(picPath);
                 try {
                     if (file.exists()) {
                         file.delete();
@@ -87,24 +94,26 @@ public class PickImageActivity extends AppCompatActivity {
                 }
 
                 img_uri = Uri.fromFile(file);
-                Intent camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT,img_uri);
                 startActivityForResult(camera_intent,REQUEST_FROM_CAMERA);
 
-                /*
-                if (isIntentAvaliable(PickImageActivity.this,camera_intent)) {
-                    startActivityForResult(camera_intent,REQUEST_FROM_CAMERA);
-                } else {
-                    Toast.makeText(PickImageActivity.this,"No Camear Apps",Toast.LENGTH_LONG).show();
-                }
-                */
+
             }
         });
 
         nextstep_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PickImageActivity.this,ListFunctionActivity.class);
+
+                Intent intent = new Intent(PickImageActivity.this,ProcessImageActivity.class);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(img_uri));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                MyBitmap.setBmp(bitmap);
                 startActivity(intent);
             }
         });
@@ -117,6 +126,9 @@ public class PickImageActivity extends AppCompatActivity {
 
         InitViewById();
         setListener();
+
+        sdPath = Environment.getExternalStorageDirectory().getPath();
+        picPath = sdPath+"/"+"temp.png";
     }
 
     @Override
@@ -135,12 +147,13 @@ public class PickImageActivity extends AppCompatActivity {
                     }
                     break;
                 case REQUEST_FROM_CAMERA:
+                    FileInputStream fileInputStream = null;
                     try {
-                        img_uri = data.getData();
-                        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(img_uri));
+                        fileInputStream = new FileInputStream(picPath);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    bitmap = BitmapFactory.decodeStream(fileInputStream);
                     break;
             }
             if (bitmap == null) {

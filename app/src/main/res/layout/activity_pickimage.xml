@@ -17,6 +17,7 @@
             android:layout_gravity="fill_vertical"
             android:id="@+id/pick_image_view"
             android:src="@mipmap/pic"
+            android:scaleType="fitXY"
             />
 
     </LinearLayout>

@@ -5,4 +5,6 @@
     <string name="from_camera">拍照</string>
     <string name="from_album">从相册中选取</string>
     <string name="next_step">下一步</string>
+    <string name="edit_photo">编辑图片</string>
+    <string name="save_photo">保存图片</string>
 </resources>

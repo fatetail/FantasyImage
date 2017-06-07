@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:id="@+id/pick_image_view"
+        android:id="@+id/process_image_view"
         android:src="@mipmap/pic"
+        android:scaleType="fitXY"
         />
 
     <LinearLayout
@@ -23,21 +24,15 @@
         <Button
             style="@style/PickActivityButton"
             android:background="@color/colorAccent"
-            android:id="@+id/from_camera"
-            android:text="@string/from_camera" />
+            android:id="@+id/edit_photo"
+            android:text="@string/edit_photo" />
 
         <Button
             style="@style/PickActivityButton"
             android:background="@color/colorPrimary"
-            android:id="@+id/from_album"
-            android:text="@string/from_album" />
+            android:id="@+id/save_photo"
+            android:text="@string/save_photo" />
 
-        <Button
-            style="@style/PickActivityButton"
-            android:background="@android:color/holo_blue_bright"
-            android:id="@+id/next_step"
-            android:text="@string/next_step"
-            android:enabled="false" />
     </LinearLayout>
 
 

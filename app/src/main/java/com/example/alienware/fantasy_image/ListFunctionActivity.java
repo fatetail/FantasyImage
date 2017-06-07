@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ public class ListFunctionActivity extends AppCompatActivity {
     /*声明View*/
     private ListView listView;
 
+    /*声明List和String*/
     private List<Map<String,Object>> list_data = new ArrayList<>();
     private String[] function_names = new String[] {"裁剪","旋转","缩放","透明度","镜像","直方图均衡化","模糊","浮雕","边缘","锐化"};
 
@@ -26,7 +29,8 @@ public class ListFunctionActivity extends AppCompatActivity {
     private void InitViewById() {
         listView = (ListView)findViewById(R.id.function_list);
 
-        for (int i = 0; i < 10; i++) {
+        /*实现ListView的适配器*/
+        for (int i = 0; i < function_names.length; i++) {
             Map<String,Object> temp = new LinkedHashMap<>();
             temp.put("function",function_names[i]);
             list_data.add(temp);
@@ -38,7 +42,12 @@ public class ListFunctionActivity extends AppCompatActivity {
 
     /*设置监听*/
     private void setListener() {
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                
+            }
+        });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
