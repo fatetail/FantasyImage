@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
+    android:gravity="fill"
     >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="10"
+        android:id="@+id/process_image_view"
         android:src="@mipmap/pic"
+        android:scaleType="fitXY"
         />
 
     <LinearLayout
@@ -22,18 +24,15 @@
         <Button
             style="@style/PickActivityButton"
             android:background="@color/colorAccent"
-            android:text="@string/from_camera" />
+            android:id="@+id/edit_photo"
+            android:text="@string/edit_photo" />
 
         <Button
             style="@style/PickActivityButton"
             android:background="@color/colorPrimary"
-            android:text="@string/from_album" />
+            android:id="@+id/save_photo"
+            android:text="@string/save_photo" />
 
-        <Button
-            style="@style/PickActivityButton"
-            android:background="@android:color/holo_blue_bright"
-            android:text="@string/next_step"
-            android:enabled="false" />
     </LinearLayout>
 
 
