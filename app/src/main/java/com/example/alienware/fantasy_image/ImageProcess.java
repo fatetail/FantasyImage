@@ -98,4 +98,31 @@ public class ImageProcess {
         // 返回新的位图，也即调色处理后的图片
         return  bmp;
     }
+
+    /**
+     * 调整图像透明度
+     * @param bm
+     * 传入图像
+     * @param mTransparencyValue
+     * 传入透明度倍数
+     * @return
+     * 返回处理后的图像
+     */
+    public static Bitmap transparencyProcess(Bitmap bm, float mTransparencyValue) {
+        Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        // 创建一个相同尺寸的可变的位图区,用于绘制调色后的图片
+        Canvas canvas = new Canvas(bmp); // 得到画笔对象
+        Paint paint = new Paint(); // 新建paint
+        paint.setAntiAlias(true); // 设置抗锯齿,也即是边缘做平滑处理
+
+        ColorMatrix mTransparencMatrix = new ColorMatrix();
+        mTransparencMatrix.reset();
+        mTransparencMatrix.setScale(1, 1, 1, mTransparencyValue);
+
+        paint.setColorFilter(new ColorMatrixColorFilter(mTransparencMatrix)); // 设置颜色变换效果
+        canvas.drawBitmap(bm, 0, 0, paint); // 将颜色变化后的图片输出到新创建的位图区
+        // 返回新的位图，也即调色处理后的图片
+        return  bmp;
+    }
 }
