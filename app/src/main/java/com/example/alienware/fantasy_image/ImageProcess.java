@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 /**
@@ -17,11 +18,11 @@ public class ImageProcess {
     /**
      * 调整图像色调
      * @param bm
-     * 传入图像
+     * 传入位图
      * @param mHueValue
      * 修改色调的倍数
      * @return
-     * 返回修改后图像
+     * 返回修改后位图
      */
     public static Bitmap hueProcess(Bitmap bm, float mHueValue) {
         Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
@@ -44,12 +45,12 @@ public class ImageProcess {
     /**
      * 调整图像饱和度
      * @param bm
-     * 传入图像
+     * 传入位图
      * @param mSaturationValue
      * 最小可设为0，此时对应的是灰度图，
      * 为1表示饱和度不变，设置大于1，就显示过饱和
      * @return
-     * 返回修改后的图像
+     * 返回修改后的位图
      */
     public static Bitmap saturationProcess(Bitmap bm, float mSaturationValue) {
         Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
@@ -72,11 +73,11 @@ public class ImageProcess {
     /**
      * 调整图像亮度
      * @param bm
-     * 传入图像
+     * 传入位图
      * @param mLumValue
      * 色轮旋转的角度,正值表示顺时针旋转（变亮），负值表示逆时针旋转（变暗）
      * @return
-     * 返回修改后的图像
+     * 返回修改后的位图
      */
     public static Bitmap lumProcess(Bitmap bm, float mLumValue) {
         Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
@@ -102,11 +103,11 @@ public class ImageProcess {
     /**
      * 调整图像透明度
      * @param bm
-     * 传入图像
+     * 传入位图
      * @param mTransparencyValue
      * 传入透明度倍数
      * @return
-     * 返回处理后的图像
+     * 返回处理后的位图
      */
     public static Bitmap transparencyProcess(Bitmap bm, float mTransparencyValue) {
         Bitmap bmp = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),
@@ -124,5 +125,50 @@ public class ImageProcess {
         canvas.drawBitmap(bm, 0, 0, paint); // 将颜色变化后的图片输出到新创建的位图区
         // 返回新的位图，也即调色处理后的图片
         return  bmp;
+    }
+
+    /**
+     * 进行图像缩放
+     * @param bm
+     * 传入位图
+     * @param w
+     * 需要放缩到的宽度
+     * @param h
+     * 需要放缩到的高度
+     * @return
+     * 返回放缩后的位图
+     */
+    public static Bitmap resizeProcess(Bitmap bm, int w, int h) {
+        int width = bm.getWidth(); //获得位图宽度
+        int height = bm.getHeight(); //获得位图高度
+
+        float scaleWidth = ((float) w) / width; //计算宽度缩放比例
+        float scaleHeight = ((float) h) / height; //计算高度缩放比例
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight); //计算缩放矩阵
+
+        //生成缩放后位图,并返回
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    }
+
+    /**
+     * 进行图像旋转
+     * @param bm
+     * 传入位图
+     * @param rotateValue
+     * 旋转角度，角度制
+     * @return
+     * 旋转后位图
+     */
+    public static Bitmap rotateProcess(Bitmap bm, float rotateValue) {
+        int width = bm.getWidth(); //获得位图宽度
+        int height = bm.getHeight(); //获得位图高度
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotateValue); //计算旋转矩阵
+
+        //生成缩放后位图,并返回
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     }
 }
