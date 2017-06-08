@@ -9,7 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 
 /**
- * Created by Administrator on 2017/6/9.
+ * Created by Zhanglq on 2017/6/9.
  * 图像处理类
  */
 
@@ -222,5 +222,19 @@ public class ImageProcess {
         matrix.postScale(1, -1); // 计算镜像水平翻转矩阵
         //生成缩放后位图,并返回
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    }
+
+    /**
+     * 对图像进行高斯模糊
+     * @param bm
+     * 传入图像
+     * @param radius
+     * 模糊程度，必须大于等于1，越大越模糊
+     * @return
+     * 返回模糊后位图
+     */
+    public  static  Bitmap blurProcess(Bitmap bm, int radius) {
+        //对图像进行高斯模糊，true表示覆盖原位图
+        return FastBlur.doBlur(bm, radius, true);
     }
 }
