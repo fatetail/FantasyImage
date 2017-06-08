@@ -167,7 +167,59 @@ public class ImageProcess {
 
         Matrix matrix = new Matrix();
         matrix.postRotate(rotateValue); //计算旋转矩阵
+        //生成缩放后位图,并返回
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    }
 
+    /**
+     * 进行图像裁剪,截取以（ltX，ltY）--(rbX,rbY)为对角线的区域
+     * @param bm
+     * 传入图像
+     * @param ltX
+     * 裁剪区域左上角的x坐标
+     * @param ltY
+     * 裁剪区域左上角的y坐标
+     * @param rbX
+     * 裁剪区域右下角的x坐标
+     * @param rbY
+     * 裁剪区域右下角的y坐标
+     * @return
+     * 返回处理后的图像
+     */
+    public static Bitmap cropProcess(Bitmap bm, int ltX, int ltY, int rbX, int rbY) {
+        return  Bitmap.createBitmap(bm, ltX, ltY, rbX, rbY);
+    }
+
+    /**
+     * 进行图像水平镜像翻转
+     * @param bm
+     * 传入位图
+     * @return
+     * 返回位图
+     */
+    public static Bitmap convertXProcess(Bitmap bm) {
+        int width = bm.getWidth(); //获得位图宽度
+        int height = bm.getHeight(); //获得位图高度
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(-1, 1); // 计算镜像水平翻转矩阵
+        //生成缩放后位图,并返回
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    }
+
+    /**
+     * 进行图像垂直镜像翻转
+     * @param bm
+     * 传入位图
+     * @return
+     * 返回位图
+     */
+    public static Bitmap convertYProcess(Bitmap bm) {
+        int width = bm.getWidth(); //获得位图宽度
+        int height = bm.getHeight(); //获得位图高度
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(1, -1); // 计算镜像水平翻转矩阵
         //生成缩放后位图,并返回
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     }
