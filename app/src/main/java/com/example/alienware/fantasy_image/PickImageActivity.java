@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class PickImageActivity extends AppCompatActivity {
     /*声明跳转Activity返回码*/
     private static final int REQUEST_FROM_ALBUM = 22;
     private static final int REQUEST_FROM_CAMERA = 23;
-
+    private static final int CUT_OK = 24;
     private Uri img_uri;
 
     private String sdPath;
@@ -46,14 +47,6 @@ public class PickImageActivity extends AppCompatActivity {
         pick_image_view = (ImageView)findViewById(R.id.pick_image_view);
     }
 
-    /*判断相机Intent是否有效*/
-    /*
-    private boolean isIntentAvaliable(Context context,Intent intent) {
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY);
-        return resolveInfoList.size()>0;
-    }
-    */
     /*设置监听*/
     private void setListener() {
         album_button.setOnClickListener(new View.OnClickListener() {
@@ -71,12 +64,7 @@ public class PickImageActivity extends AppCompatActivity {
                 Intent album_intent = new Intent(Intent.ACTION_PICK);
                 album_intent.setType("image/*");
                 startActivityForResult(album_intent,REQUEST_FROM_ALBUM);
-                /*
-                img_uri = Uri.fromFile(file);
-                Intent album_intent = new Intent("android.intent.action.GET_CONTENT");
-                album_intent.putExtra(MediaStore.EXTRA_OUTPUT,img_uri);
-                startActivityForResult(album_intent,REQUEST_FROM_ALBUM);
-                */
+
             }
         });
 
@@ -105,16 +93,11 @@ public class PickImageActivity extends AppCompatActivity {
         nextstep_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intent = new Intent(PickImageActivity.this,ProcessImageActivity.class);
-                Bitmap bitmap = null;
-                try {
-                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(img_uri));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (MyBitmap.getBmp() != null) {
+                    Intent intent = new Intent(PickImageActivity.this,ProcessImageActivity.class);
+                    startActivity(intent);
                 }
-                MyBitmap.setBmp(bitmap);
-                startActivity(intent);
+
             }
         });
     }
@@ -131,6 +114,29 @@ public class PickImageActivity extends AppCompatActivity {
         picPath = sdPath+"/"+"temp.png";
     }
 
+    /*调用系统函数库进行图片的裁剪*/
+    private void clipPhoto(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri,"image/*");
+        intent.putExtra("crop","true");
+        intent.putExtra("aspectX",1);
+        intent.putExtra("aspectY",1);
+        intent.putExtra("outputX",200);
+        intent.putExtra("outputY",200);
+        intent.putExtra("return-data",true);
+        startActivityForResult(intent, CUT_OK);
+    }
+
+
+    /*将摄像机或者相册获取的照片设置在程序中*/
+    private void setPicToView(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            Bitmap bitmap = bundle.getParcelable("data");
+            pick_image_view.setImageBitmap(bitmap);
+            MyBitmap.setBmp(bitmap);
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -140,28 +146,30 @@ public class PickImageActivity extends AppCompatActivity {
             switch (requestCode) {
                 case REQUEST_FROM_ALBUM:
                     try {
-                        img_uri = data.getData();
-                        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(img_uri));
+                        if (data != null) {
+                            clipPhoto(data.getData());
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case REQUEST_FROM_CAMERA:
-                    FileInputStream fileInputStream = null;
-                    try {
-                        fileInputStream = new FileInputStream(picPath);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    File file = new File(picPath);
+                    if (file.exists()) {
+                        clipPhoto(Uri.fromFile(file));
                     }
-                    bitmap = BitmapFactory.decodeStream(fileInputStream);
+
                     break;
+                case CUT_OK:
+                    if (data != null) {
+                        setPicToView(data);
+                        nextstep_button.setEnabled(true);
+                    }
+                    break;
+
             }
-            if (bitmap == null) {
-                Toast.makeText(PickImageActivity.this,"No Pictiure",Toast.LENGTH_LONG).show();
-            } else {
-                pick_image_view.setImageBitmap(bitmap);
-                nextstep_button.setEnabled(true);
-            }
+
         }
     }
 }
