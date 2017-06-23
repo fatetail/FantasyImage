@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
  * Created by paveld on 2014/3/6
  */
 
-public class FastBlur {
+class FastBlur {
 
     public static Bitmap doBlur(Bitmap sentBitmap, int radius,
                                 boolean canReuseInBitmap) {
-        Bitmap bitmap;
+        Bitmap bitmap = null;
         if (canReuseInBitmap) {
             bitmap = sentBitmap;
         } else {
@@ -213,6 +213,6 @@ public class FastBlur {
 
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
 
-        return (bitmap);
+        return bitmap;
     }
 }
