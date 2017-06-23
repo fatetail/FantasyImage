@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         InitViewById();
         setListener();
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

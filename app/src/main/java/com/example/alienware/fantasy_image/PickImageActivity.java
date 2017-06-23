@@ -173,4 +173,11 @@ public class PickImageActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.setClass(PickImageActivity.this, MainActivity.class);
+        PickImageActivity.this.startActivity(intent);
+    }
 }
