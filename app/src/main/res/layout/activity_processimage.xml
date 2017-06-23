@@ -12,7 +12,7 @@
         android:layout_weight="10"
         android:id="@+id/process_image_view"
         android:src="@mipmap/pic"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         />
 
     <LinearLayout

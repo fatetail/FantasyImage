@@ -106,7 +106,7 @@ public class ProcessImageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!firstOpen) {
                     Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否保存当前修改?")
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int k) {
                                     MyBitmap.setOrigin(MyBitmap.getBmp());
@@ -114,9 +114,18 @@ public class ProcessImageActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             })
-                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int k) {
+                                }
+                            })
+                            .setNegativeButton("不保存", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    MyBitmap.setBmp(MyBitmap.getOrigin());
+                                    process_image_view.setImageBitmap(bitmap);
+                                    Intent intent = new Intent(ProcessImageActivity.this, ListFunctionActivity.class);
+                                    startActivity(intent);
                                 }
                             }).create();
                     builder.show();
@@ -343,6 +352,7 @@ public class ProcessImageActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApplication.getInstance().addActivity(this);
 
         setContentView(R.layout.activity_processimage);
 
@@ -377,18 +387,25 @@ public class ProcessImageActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否退出当前修改?")
+        Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否保存?")
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int k) {
-                        Intent intent = new Intent();
-                        intent.setClass(ProcessImageActivity.this, PickImageActivity.class);
-                        ProcessImageActivity.this.startActivity(intent);
+                        MyBitmap.setOrigin(MyBitmap.getBmp());
+                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int k) {
                     }
                 })
                 .setNegativeButton("否", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
+                        startActivity(intent);
                     }
                 }).create();
         builder.show();
