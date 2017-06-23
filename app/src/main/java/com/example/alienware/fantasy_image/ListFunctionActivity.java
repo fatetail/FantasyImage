@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,17 +26,15 @@ public class ListFunctionActivity extends AppCompatActivity {
 
     /*声明List和String*/
     private List<Map<String,Object>> list_data = new ArrayList<>();
-    private String[] function_names = new String[] {"图像色调","图像饱和度","图像亮度","图像透明度","图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊"};
+    private String[] function_names = new String[] {"图像色调","图像饱和度","图像透明度","图像亮度","图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊","滤镜"};
 
     /*图像功能默认参数值*/
     private float hueValue = 3;
     private float satValue = 3;
     private float lumValue = 3;
     private float tranValue = 3;
-    private int resizeW = 300;
-    private int resizeH = 300;
-    private float rotValue = 45;
-    private int raidus = 3;
+    private float rotValue = 0;
+    private int raidus = 1;
 
     /*获取XML中的控件*/
     private void InitViewById() {
@@ -64,58 +63,69 @@ public class ListFunctionActivity extends AppCompatActivity {
                 Intent intent = new Intent(ListFunctionActivity.this, ProcessImageActivity.class);
                 // 选择调节色调的函数
                 if (i == 0) {
-                    Bitmap bitmap = ImageProcess.hueProcess(MyBitmap.getBmp(),hueValue);
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.hueProcess(MyBitmap.getBmp(),hueValue);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setHueValue(hueValue);
                     PassedData passedData = new PassedData(0,hueValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择调节饱和度的函数
                 if (i == 1) {
-                    Bitmap bitmap = ImageProcess.saturationProcess(MyBitmap.getBmp(),satValue);
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.saturationProcess(MyBitmap.getBmp(),satValue);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setSatValue(satValue);
                     PassedData passedData = new PassedData(1,satValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择调节透明度的函数
                 if (i == 2) {
-                    Bitmap bitmap = ImageProcess.transparencyProcess(MyBitmap.getBmp(),tranValue);
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.transparencyProcess(MyBitmap.getBmp(),tranValue);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setTranValue(tranValue);
                     PassedData passedData = new PassedData(2,tranValue);
                     intent.putExtra("PassedData",passedData);
                 }
-                //选择重新放缩图像的函数
+                //选择调节亮度的函数
                 if (i == 3) {
-                    Bitmap bitmap = ImageProcess.resizeProcess(MyBitmap.getBmp(),resizeW,resizeH);
-                    MyBitmap.setBmp(bitmap);
-                    PassedData passedData = new PassedData(3,resizeW,resizeH);
+/*                    Bitmap bitmap = ImageProcess.lumProcess(MyBitmap.getBmp(), lumValue);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setLumValue(lumValue);
+                    PassedData passedData = new PassedData(3,lumValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择旋转图像的函数
                 if (i == 4) {
-                    Bitmap bitmap = ImageProcess.rotateProcess(MyBitmap.getBmp(),rotValue);
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.rotateProcess(MyBitmap.getBmp(),rotValue);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setRotValue(rotValue);
                     PassedData passedData = new PassedData(4,rotValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择沿X轴垂直反转的函数
                 if (i == 5) {
-                    Bitmap bitmap = ImageProcess.convertXProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.convertXProcess(MyBitmap.getBmp());
+                    MyBitmap.setBmp(bitmap);*/
                     PassedData passedData = new PassedData(5);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择沿Y轴垂直反转的函数
                 if (i == 6) {
-                    Bitmap bitmap = ImageProcess.convertYProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.convertYProcess(MyBitmap.getBmp());
+                    MyBitmap.setBmp(bitmap);*/
                     PassedData passedData = new PassedData(6);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择模糊的函数
                 if (i == 7) {
-                    Bitmap bitmap = ImageProcess.blurProcess(MyBitmap.getBmp(),raidus);
-                    MyBitmap.setBmp(bitmap);
+/*                    Bitmap bitmap = ImageProcess.blurProcess(MyBitmap.getBmp(),raidus);
+                    MyBitmap.setBmp(bitmap);*/
+                    MyBitmap.setRaidus(raidus);
                     PassedData passedData = new PassedData(7);
+                    intent.putExtra("PassedData",passedData);
+                }
+                //选择滤镜的函数
+                if (i == 8) {
+                    PassedData passedData = new PassedData(8);
                     intent.putExtra("PassedData",passedData);
                 }
                 startActivity(intent);
