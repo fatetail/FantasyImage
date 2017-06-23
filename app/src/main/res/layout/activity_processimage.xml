@@ -33,6 +33,12 @@
             android:id="@+id/save_photo"
             android:text="@string/save_photo" />
 
+        <Button
+            style="@style/PickActivityButton"
+            android:background="@color/colorPrimary"
+            android:id="@+id/cancel"
+            android:text="还原" />
+
     </LinearLayout>
 
 
