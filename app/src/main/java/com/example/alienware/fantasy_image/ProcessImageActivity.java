@@ -374,4 +374,23 @@ public class ProcessImageActivity extends AppCompatActivity {
         bitmap = new Filter().comicFilter(this, bitmap);
         process_image_view.setImageBitmap(bitmap);
     }
+
+    @Override
+    public void onBackPressed() {
+        Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否退出当前修改?")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int k) {
+                        Intent intent = new Intent();
+                        intent.setClass(ProcessImageActivity.this, PickImageActivity.class);
+                        ProcessImageActivity.this.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create();
+        builder.show();
+    }
 }
