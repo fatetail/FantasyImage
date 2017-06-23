@@ -135,6 +135,7 @@ public class PickImageActivity extends AppCompatActivity {
             Bitmap bitmap = bundle.getParcelable("data");
             pick_image_view.setImageBitmap(bitmap);
             MyBitmap.setBmp(bitmap);
+            MyBitmap.setOrigin(bitmap);
         }
     }
     @Override
