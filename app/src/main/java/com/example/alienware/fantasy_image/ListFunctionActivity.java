@@ -26,15 +26,14 @@ public class ListFunctionActivity extends AppCompatActivity {
 
     /*声明List和String*/
     private List<Map<String,Object>> list_data = new ArrayList<>();
-    private String[] function_names = new String[] {"图像色调","图像饱和度","图像透明度","图像亮度",
-            "图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊","漫画滤镜", "卡通滤镜", "浮雕滤镜",
+    private String[] function_names = new String[] {"色调","饱和度","亮度",
+            "旋转","镜像旋转","高斯模糊","漫画滤镜", "卡通滤镜", "浮雕滤镜",
             "水粉滤镜", "阴影滤镜", "素描滤镜"};
 
     /*图像功能默认参数值*/
     private float hueValue = 3;
     private float satValue = 3;
     private float lumValue = 3;
-    private float tranValue = 3;
     private float rotValue = 0;
     private int raidus = 1;
 
@@ -75,42 +74,31 @@ public class ListFunctionActivity extends AppCompatActivity {
                     PassedData passedData = new PassedData(1,satValue);
                     intent.putExtra("PassedData",passedData);
                 }
-                //选择调节透明度的函数
-                if (i == 2) {
-                    MyBitmap.setTranValue(tranValue);
-                    PassedData passedData = new PassedData(2,tranValue);
-                    intent.putExtra("PassedData",passedData);
-                }
                 //选择调节亮度的函数
-                if (i == 3) {
+                if (i == 2) {
                     MyBitmap.setLumValue(lumValue);
-                    PassedData passedData = new PassedData(3,lumValue);
+                    PassedData passedData = new PassedData(2,lumValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择旋转图像的函数
-                if (i == 4) {
+                if (i == 3) {
                     MyBitmap.setRotValue(rotValue);
-                    PassedData passedData = new PassedData(4,rotValue);
+                    PassedData passedData = new PassedData(3,rotValue);
                     intent.putExtra("PassedData",passedData);
                 }
-                //选择沿X轴垂直反转的函数
-                if (i == 5) {
-                    PassedData passedData = new PassedData(5);
-                    intent.putExtra("PassedData",passedData);
-                }
-                //选择沿Y轴垂直反转的函数
-                if (i == 6) {
-                    PassedData passedData = new PassedData(6);
+                //选择垂直反转的函数
+                if (i == 4) {
+                    PassedData passedData = new PassedData(4);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择模糊的函数
-                if (i == 7) {
+                if (i == 5) {
                     MyBitmap.setRaidus(raidus);
-                    PassedData passedData = new PassedData(7);
+                    PassedData passedData = new PassedData(5);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择滤镜处理的函数
-                if (i >= 8) {
+                if (i >= 6) {
                     PassedData passedData = new PassedData(i);
                     intent.putExtra("PassedData",passedData);
                 }

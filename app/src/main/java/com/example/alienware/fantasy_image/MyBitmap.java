@@ -19,7 +19,6 @@ public class MyBitmap {
     static private float hueValue = 0;
     static private float satValue = 0;
     static private float lumValue = 0;
-    static private float tranValue = 0;
     static private float rotValue = 0;
     static private int raidus = 0;
 
@@ -51,10 +50,6 @@ public class MyBitmap {
         MyBitmap.lumValue = lumValue;
     }
 
-    public static void setTranValue(float tranValue) {
-        MyBitmap.tranValue = tranValue;
-    }
-
     public static void setRotValue(float rotValue) {
         MyBitmap.rotValue = rotValue;
     }
@@ -74,10 +69,6 @@ public class MyBitmap {
 
     public static float getLumValue() {
         return lumValue;
-    }
-
-    public static float getTranValue() {
-        return tranValue;
     }
 
     public static float getRotValue() {

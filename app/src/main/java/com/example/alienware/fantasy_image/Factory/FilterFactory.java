@@ -20,17 +20,17 @@ public class FilterFactory {
     static public Bitmap processImage(int option, Context context) {
         Bitmap bm = null;
 
-        if (option == 8) {
+        if (option == 6) {
             bm = ComicFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-        } else if (option == 9) {
+        } else if (option == 7) {
             bm = CartoonFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-        } else if (option == 10) {
+        } else if (option == 8) {
             bm = EmbossFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-        } else if (option == 11) {
+        } else if (option == 9) {
             bm = KuwaharaFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-        } else if (option == 12) {
+        } else if (option == 10) {
             bm = ShadowFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-        } else if (option == 13) {
+        } else if (option == 11) {
             bm = SketchFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
         }
         MyBitmap.setBmp(Bitmap.createBitmap(bm));

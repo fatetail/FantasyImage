@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaActionSound;
 import android.net.Uri;
@@ -18,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -36,11 +39,13 @@ import java.util.List;
 
 public class PickImageActivity extends AppCompatActivity {
     /*声明View*/
+    private Button start_button;
     private Button camera_button;
     private Button album_button;
     private Button nextstep_button;
     private ImageView pick_image_view;
-
+    private LinearLayout bottom_linearlayout;
+    private LinearLayout pick_linearlayout;
     /*声明跳转Activity返回码*/
     private static final int REQUEST_FROM_ALBUM = 22;
     private static final int REQUEST_FROM_CAMERA = 23;
@@ -57,14 +62,28 @@ public class PickImageActivity extends AppCompatActivity {
 
     /*获取XML中的控件*/
     private void InitViewById() {
+        start_button = (Button)findViewById(R.id.start_button);
         camera_button = (Button) findViewById(R.id.from_camera);
         album_button = (Button) findViewById(R.id.from_album);
         nextstep_button = (Button) findViewById(R.id.next_step);
         pick_image_view = (ImageView) findViewById(R.id.pick_image_view);
+        bottom_linearlayout = (LinearLayout)findViewById(R.id.bottom_layout);
+        pick_linearlayout = (LinearLayout)findViewById(R.id.pick_image_layout);
+
     }
 
     /*设置监听*/
     private void setListener() {
+        start_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottom_linearlayout.setVisibility(View.VISIBLE);
+                pick_linearlayout.setBackground(null);
+                pick_image_view.setImageResource(R.mipmap.pic);
+                start_button.setEnabled(false);
+                start_button.setVisibility(View.INVISIBLE);
+            }
+        });
         album_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,11 +227,6 @@ public class PickImageActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(PickImageActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.

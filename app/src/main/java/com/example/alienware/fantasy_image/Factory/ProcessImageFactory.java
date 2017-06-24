@@ -39,33 +39,28 @@ public class ProcessImageFactory {
             MyBitmap.setSatValue(satValue);
             bm = SaturationProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), satValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 2) {           // choose process transparency
-            float tranValue = MyBitmap.getTranValue();
-            tranValue += 3 * gesture;
-            tranValue = (tranValue <= 0 ? 0.1f : tranValue);
-            MyBitmap.setTranValue(tranValue);
-            bm = TransparencyProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), tranValue);
-            MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 3) {           // choose process luminance
+        } else if (option == 2) {           // choose process luminance
             float lumValue = MyBitmap.getLumValue();
             lumValue += 3 * gesture;
             lumValue = (lumValue <= 0 ? 0.1f : lumValue);
             MyBitmap.setLumValue(lumValue);
             bm = LuminanceProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), lumValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 4) {           // choose process rotation
+        } else if (option == 3) {           // choose process rotation
             float rotValue = MyBitmap.getRotValue();
             rotValue += 5 * gesture;
             MyBitmap.setRotValue(rotValue);
             bm = RotationProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), rotValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 5) {           // choose convert X
-            bm = ConvertXProcess.process(MyBitmap.getBmp());
-            MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 6) {           // choose convert Y
-            bm = ConvertYProcess.process(MyBitmap.getBmp());
-            MyBitmap.setBmp(Bitmap.createBitmap(bm));
-        } else if (option == 7) {           // choose blur
+        } else if (option == 4) {
+            if (gesture < 0) {// choose convert X
+                bm = ConvertXProcess.process(MyBitmap.getBmp());
+                MyBitmap.setBmp(Bitmap.createBitmap(bm));
+            } else {
+                bm = ConvertYProcess.process(MyBitmap.getBmp());
+                MyBitmap.setBmp(Bitmap.createBitmap(bm));
+            }
+        }  else if (option == 5) {           // choose blur
             int raidus = MyBitmap.getRaidus();
             raidus += 1 * gesture;
             raidus = (raidus <= 0 ? 1 : raidus);

@@ -151,14 +151,18 @@ public class ProcessImageActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float x = e2.getX() - e1.getX();
             float y = e2.getY() - e1.getY();
+            if (passedData == null) {
+                return true;
+            }
             int id = passedData.getFuncId();
-
             bitmap = ProcessImageFactory.processImage(y, id);
-            if (id >= 8 && !isChange) {
+            if (id >= 6 && !isChange) {
                 FilterFactory.processImage(id, ProcessImageActivity.this);
                 isChange = true;
             }
-            process_image_view.setImageBitmap(bitmap);
+            if (bitmap != null) {
+                process_image_view.setImageBitmap(bitmap);
+            }
 
             return true;
         }
