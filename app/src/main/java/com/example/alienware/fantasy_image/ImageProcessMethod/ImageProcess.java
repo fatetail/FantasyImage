@@ -233,6 +233,16 @@ public class ImageProcess {
      * 返回模糊后位图
      */
     public  static  Bitmap blurProcess(Bitmap bm, int radius) {
+        //如果图片过大为了避免内存被回收对图片进行下采样
+        if (bm.getWidth() * bm.getHeight() > 1600000) {
+            int w = (int)(bm.getWidth() / 1.5);
+            int h = (int)(bm.getHeight() / 1.5);
+            while (w*h> 1600000) {
+                w = (int)(bm.getWidth() / 1.5);
+                h = (int)(bm.getHeight() / 1.5);
+            }
+            bm = resizeProcess(bm, w, h);
+        }
         //对图像进行高斯模糊，true表示覆盖原位图
         return FastBlur.doBlur(bm, radius, true);
     }

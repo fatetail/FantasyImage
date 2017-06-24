@@ -31,19 +31,25 @@ public class MainActivity extends AppCompatActivity {
         quit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                SysApplication.getInstance().exit();
+                System.exit(0);
             }
         });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApplication.getInstance().addActivity(this);
 
         setContentView(R.layout.activity_main);
 
         InitViewById();
         setListener();
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        SysApplication.getInstance().exit();
+        System.exit(0);
     }
 }

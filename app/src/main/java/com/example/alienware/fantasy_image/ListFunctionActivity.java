@@ -122,6 +122,7 @@ public class ListFunctionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApplication.getInstance().addActivity(this);
 
         setContentView(R.layout.activity_listfunction);
 
