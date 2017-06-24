@@ -4,31 +4,25 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.alienware.fantasy_image.Bean.PassedData;
+import com.example.alienware.fantasy_image.Factory.FilterFactory;
+import com.example.alienware.fantasy_image.Factory.ProcessImageFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import jp.co.cyberagent.android.gpuimage.GPUImage;
-import jp.co.cyberagent.android.gpuimage.GPUImageGrayscaleFilter;
 
 public class ProcessImageActivity extends AppCompatActivity {
     /*声明View*/
@@ -41,11 +35,15 @@ public class ProcessImageActivity extends AppCompatActivity {
     private static final int REQUEST_FROM_ALBUM = 0;
     private static final int REQUEST_FROM_CAMERA = 1;
 
+    private static final int MINUS = -1;
+    private static final int ADD = 1;
+
     private Bitmap bitmap;
 
     private PassedData passedData;
 
     private static boolean firstOpen = true;
+    private static boolean isChange = false;
     /*手势检测*/
     private GestureDetector gestureDetector;
 
@@ -141,7 +139,9 @@ public class ProcessImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MyBitmap.setBmp(MyBitmap.getOrigin());
+                bitmap = MyBitmap.getBmp();
                 process_image_view.setImageBitmap(bitmap);
+                isChange = false;
             }
         });
     }
@@ -151,196 +151,15 @@ public class ProcessImageActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float x = e2.getX() - e1.getX();
             float y = e2.getY() - e1.getY();
-            if (y > 0) {
-                int valueNum = passedData.getValueNum();
-                int i = passedData.getFuncId();
+            int id = passedData.getFuncId();
 
-                // 选择调节色调的函数
-                if (i == 0) {
-                    float hueValue = MyBitmap.getHueValue();
-                    hueValue -= 3;
-                    hueValue = (hueValue <= 0 ? 0.1f : hueValue);
-                    MyBitmap.setHueValue(hueValue);
-                    Bitmap bitmap = ImageProcess.hueProcess(MyBitmap.getOrigin(), hueValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose hue");
-                }
-                //选择调节饱和度的函数
-                if (i == 1) {
-                    float satValue = MyBitmap.getSatValue();
-                    satValue -= 3;
-                    satValue = (satValue <= 0 ? 0.1f : satValue);
-                    MyBitmap.setSatValue(satValue);
-                    Bitmap bitmap = ImageProcess.saturationProcess(MyBitmap.getOrigin(), satValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose sat");
-                }
-                //选择调节透明度的函数
-                if (i == 2) {
-                    float tranValue = MyBitmap.getTranValue();
-                    tranValue -= 3;
-                    tranValue = (tranValue <= 0 ? 0.1f : tranValue);
-                    MyBitmap.setTranValue(tranValue);
-                    Bitmap bitmap = ImageProcess.transparencyProcess(MyBitmap.getOrigin(), tranValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose transparent");
-                }
-                //选择调节亮度的函数
-                if (i == 3) {
-                    float lumValue = MyBitmap.getLumValue();
-                    lumValue -= 3;
-                    lumValue = (lumValue <= 0 ? 0.1f : lumValue);
-                    MyBitmap.setLumValue(lumValue);
-                    Bitmap bitmap = ImageProcess.lumProcess(MyBitmap.getOrigin(), lumValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose luminance");
-                }
-                //选择旋转图像的函数
-                if (i == 4) {
-                    float rotValue = MyBitmap.getRotValue();
-                    rotValue -= 5;
-                    MyBitmap.setRotValue(rotValue);
-                    Bitmap bitmap = ImageProcess.rotateProcess(MyBitmap.getOrigin(), rotValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose rotate");
-                }
-                //选择沿X轴垂直反转的函数
-                if (i == 5) {
-                    Bitmap bitmap = ImageProcess.convertXProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    bitmap = ImageProcess.convertXProcess(MyBitmap.getOrigin());
-                    MyBitmap.setOrigin(bitmap);
-                    Log.i("ProcessImageActivity", "choose covert X");
-                }
-                //选择沿Y轴垂直反转的函数
-                if (i == 6) {
-                    Bitmap bitmap = ImageProcess.convertYProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    bitmap = ImageProcess.convertYProcess(MyBitmap.getOrigin());
-                    MyBitmap.setOrigin(bitmap);
-                    Log.i("ProcessImageActivity", "choose convert Y");
-                }
-                //选择模糊的函数
-                if (i == 7) {
-                    int raidus = MyBitmap.getRaidus();
-                    raidus -= 1;
-                    raidus = (raidus <= 0 ? 1 : raidus);
-                    MyBitmap.setRaidus(raidus);
-                    if (raidus != 1) {
-                        Bitmap temp = Bitmap.createBitmap(MyBitmap.getOrigin());
-                        Bitmap bitmap = ImageProcess.blurProcess(temp, raidus);
-                        MyBitmap.setBmp(bitmap);
-                        process_image_view.setImageBitmap(bitmap);
-                    } else {
-                        bitmap = MyBitmap.getOrigin();
-                        process_image_view.setImageBitmap(bitmap);
-                    }
-                    Log.i("ProcessImageActivity", ""+MyBitmap.getRaidus());
-                    Log.i("ProcessImageActivity", "choose blur");
-                }
-                //选择滤镜的函数
-                if (i == 8) {
-                    Log.i("ProcessImageActivity", "choose filter");
-                    showFilter();
-                }
-
-            } else {
-                int valueNum = passedData.getValueNum();
-                int i = passedData.getFuncId();
-
-                // 选择调节色调的函数
-                if (i == 0) {
-                    float hueValue = MyBitmap.getHueValue();
-                    hueValue += 3;
-                    MyBitmap.setHueValue(hueValue);
-                    Bitmap bitmap = ImageProcess.hueProcess(MyBitmap.getOrigin(), hueValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose hue");
-                }
-                //选择调节饱和度的函数
-                if (i == 1) {
-                    float satValue = MyBitmap.getSatValue();
-                    satValue += 3;
-                    MyBitmap.setSatValue(satValue);
-                    Bitmap bitmap = ImageProcess.saturationProcess(MyBitmap.getOrigin(), satValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose sat");
-                }
-                //选择调节透明度的函数
-                if (i == 2) {
-                    float tranValue = MyBitmap.getTranValue();
-                    tranValue += 3;
-                    MyBitmap.setTranValue(tranValue);
-                    Bitmap bitmap = ImageProcess.transparencyProcess(MyBitmap.getOrigin(), tranValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose transparent");
-                }
-                //选择调节亮度的函数
-                if (i == 3) {
-                    float lumValue = MyBitmap.getLumValue();
-                    lumValue += 3;
-                    MyBitmap.setLumValue(lumValue);
-                    Bitmap bitmap = ImageProcess.lumProcess(MyBitmap.getOrigin(), lumValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose resize");
-                }
-                //选择旋转图像的函数
-                if (i == 4) {
-                    float rotValue = MyBitmap.getRotValue();
-                    rotValue += 5;
-                    MyBitmap.setRotValue(rotValue);
-                    Bitmap bitmap = ImageProcess.rotateProcess(MyBitmap.getOrigin(), rotValue);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", "choose rotate");
-                }
-                //选择沿X轴垂直反转的函数
-                if (i == 5) {
-                    Bitmap bitmap = ImageProcess.convertXProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    bitmap = ImageProcess.convertXProcess(MyBitmap.getOrigin());
-                    MyBitmap.setOrigin(bitmap);
-                    Log.i("ProcessImageActivity", "choose covert X");
-                }
-                //选择沿Y轴垂直反转的函数
-                if (i == 6) {
-                    Bitmap bitmap = ImageProcess.convertYProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    bitmap = ImageProcess.convertYProcess(MyBitmap.getOrigin());
-                    MyBitmap.setOrigin(bitmap);
-                    Log.i("ProcessImageActivity", "choose convert Y");
-                }
-                //选择模糊的函数
-                if (i == 7) {
-                    int raidus = MyBitmap.getRaidus();
-                    raidus += 1;
-                    MyBitmap.setRaidus(raidus);
-                    Bitmap temp = Bitmap.createBitmap(MyBitmap.getOrigin());
-                    Bitmap bitmap = ImageProcess.blurProcess(temp, raidus);
-                    MyBitmap.setBmp(bitmap);
-                    process_image_view.setImageBitmap(bitmap);
-                    Log.i("ProcessImageActivity", ""+MyBitmap.getRaidus());
-                    Log.i("ProcessImageActivity", "choose blur");
-                }
-                //选择滤镜的函数
-                if (i == 8) {
-                    Log.i("ProcessImageActivity", "choose filter");
-                    showFilter();
-                }
+            bitmap = ProcessImageFactory.processImage(y, id);
+            if (id >= 8 && !isChange) {
+                FilterFactory.processImage(id, ProcessImageActivity.this);
+                isChange = true;
             }
+            process_image_view.setImageBitmap(bitmap);
+
             return true;
         }
     };
@@ -380,34 +199,4 @@ public class ProcessImageActivity extends AppCompatActivity {
 
     }
 
-    public void showFilter() {
-        bitmap = new Filter().comicFilter(this, bitmap);
-        process_image_view.setImageBitmap(bitmap);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否保存?")
-                .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int k) {
-                        MyBitmap.setOrigin(MyBitmap.getBmp());
-                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int k) {
-                    }
-                })
-                .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
-                        startActivity(intent);
-                    }
-                }).create();
-        builder.show();
-    }
 }
