@@ -102,12 +102,14 @@ public class ProcessImageActivity extends AppCompatActivity {
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (!firstOpen) {
                     Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否保存当前修改?")
                             .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int k) {
                                     MyBitmap.setOrigin(MyBitmap.getBmp());
+                                    isChange = false;
                                     Intent intent = new Intent(ProcessImageActivity.this, ListFunctionActivity.class);
                                     startActivity(intent);
                                 }
@@ -122,6 +124,7 @@ public class ProcessImageActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     MyBitmap.setBmp(MyBitmap.getOrigin());
                                     process_image_view.setImageBitmap(bitmap);
+                                    isChange = false;
                                     Intent intent = new Intent(ProcessImageActivity.this, ListFunctionActivity.class);
                                     startActivity(intent);
                                 }
@@ -157,7 +160,7 @@ public class ProcessImageActivity extends AppCompatActivity {
             int id = passedData.getFuncId();
             bitmap = ProcessImageFactory.processImage(x, y, id, ProcessImageActivity.this, e1.getX(), e1.getY());
             if (id >= 6 && !isChange) {
-                FilterFactory.processImage(id, ProcessImageActivity.this);
+                bitmap = FilterFactory.processImage(id, ProcessImageActivity.this);
                 isChange = true;
             }
             if (bitmap != null) {
