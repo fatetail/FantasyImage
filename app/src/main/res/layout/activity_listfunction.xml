@@ -6,6 +6,7 @@
         android:id="@+id/function_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_marginTop="10dp"
