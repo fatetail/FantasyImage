@@ -26,7 +26,9 @@ public class ListFunctionActivity extends AppCompatActivity {
 
     /*声明List和String*/
     private List<Map<String,Object>> list_data = new ArrayList<>();
-    private String[] function_names = new String[] {"图像色调","图像饱和度","图像透明度","图像亮度","图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊","滤镜"};
+    private String[] function_names = new String[] {"图像色调","图像饱和度","图像透明度","图像亮度",
+            "图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊","漫画滤镜", "卡通滤镜", "浮雕滤镜",
+            "水粉滤镜", "阴影滤镜", "素描滤镜"};
 
     /*图像功能默认参数值*/
     private float hueValue = 3;
@@ -63,71 +65,56 @@ public class ListFunctionActivity extends AppCompatActivity {
                 Intent intent = new Intent(ListFunctionActivity.this, ProcessImageActivity.class);
                 // 选择调节色调的函数
                 if (i == 0) {
-/*                    Bitmap bitmap = ImageProcess.hueProcess(MyBitmap.getBmp(),hueValue);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setHueValue(hueValue);
                     PassedData passedData = new PassedData(0,hueValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择调节饱和度的函数
                 if (i == 1) {
-/*                    Bitmap bitmap = ImageProcess.saturationProcess(MyBitmap.getBmp(),satValue);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setSatValue(satValue);
                     PassedData passedData = new PassedData(1,satValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择调节透明度的函数
                 if (i == 2) {
-/*                    Bitmap bitmap = ImageProcess.transparencyProcess(MyBitmap.getBmp(),tranValue);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setTranValue(tranValue);
                     PassedData passedData = new PassedData(2,tranValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择调节亮度的函数
                 if (i == 3) {
-/*                    Bitmap bitmap = ImageProcess.lumProcess(MyBitmap.getBmp(), lumValue);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setLumValue(lumValue);
                     PassedData passedData = new PassedData(3,lumValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择旋转图像的函数
                 if (i == 4) {
-/*                    Bitmap bitmap = ImageProcess.rotateProcess(MyBitmap.getBmp(),rotValue);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setRotValue(rotValue);
                     PassedData passedData = new PassedData(4,rotValue);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择沿X轴垂直反转的函数
                 if (i == 5) {
-/*                    Bitmap bitmap = ImageProcess.convertXProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);*/
                     PassedData passedData = new PassedData(5);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择沿Y轴垂直反转的函数
                 if (i == 6) {
-/*                    Bitmap bitmap = ImageProcess.convertYProcess(MyBitmap.getBmp());
-                    MyBitmap.setBmp(bitmap);*/
                     PassedData passedData = new PassedData(6);
                     intent.putExtra("PassedData",passedData);
                 }
                 //选择模糊的函数
                 if (i == 7) {
-/*                    Bitmap bitmap = ImageProcess.blurProcess(MyBitmap.getBmp(),raidus);
-                    MyBitmap.setBmp(bitmap);*/
                     MyBitmap.setRaidus(raidus);
                     PassedData passedData = new PassedData(7);
                     intent.putExtra("PassedData",passedData);
                 }
-                //选择滤镜的函数
-                if (i == 8) {
-                    PassedData passedData = new PassedData(8);
+                //选择滤镜处理的函数
+                if (i >= 8) {
+                    PassedData passedData = new PassedData(i);
                     intent.putExtra("PassedData",passedData);
                 }
+
                 startActivity(intent);
             }
         });

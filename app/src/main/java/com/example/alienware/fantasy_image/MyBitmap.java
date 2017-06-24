@@ -23,11 +23,11 @@ public class MyBitmap {
     static private float rotValue = 0;
     static private int raidus = 0;
 
-    static void setBmp(Bitmap bm) {
+    public static void setBmp(Bitmap bm) {
         bmp = Bitmap.createBitmap(bm);
     }
 
-    static Bitmap getBmp() {
+    public static Bitmap getBmp() {
         return bmp;
     }
 

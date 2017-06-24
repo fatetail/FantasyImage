@@ -1,4 +1,4 @@
-package com.example.alienware.fantasy_image;
+package com.example.alienware.fantasy_image.ImageProcessMethod;
 
 import android.graphics.Bitmap;
 
