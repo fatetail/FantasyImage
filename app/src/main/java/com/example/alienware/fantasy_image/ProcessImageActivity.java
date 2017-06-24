@@ -155,7 +155,7 @@ public class ProcessImageActivity extends AppCompatActivity {
                 return true;
             }
             int id = passedData.getFuncId();
-            bitmap = ProcessImageFactory.processImage(y, id);
+            bitmap = ProcessImageFactory.processImage(x, y, id, ProcessImageActivity.this, e1.getX(), e1.getY());
             if (id >= 6 && !isChange) {
                 FilterFactory.processImage(id, ProcessImageActivity.this);
                 isChange = true;

@@ -2,6 +2,7 @@ package com.example.alienware.fantasy_image.Factory;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.WindowManager;
 
 import com.example.alienware.fantasy_image.ImageProcessMethod.BlurProcess;
 import com.example.alienware.fantasy_image.ImageProcessMethod.ConvertXProcess;
@@ -19,41 +20,49 @@ import com.example.alienware.fantasy_image.MyBitmap;
 
 public class ProcessImageFactory {
     /*
-        @param [gesture] < 0 means value minus, > 0 means value add
+        @param [_x] < 0 means value minus, > 0 means value add
+        @param [_y] < 0 means value minus, > 0 means value add
         @param [option]  different image process method
+        @param [context] context using this class
+        @param [sX] start point X coordinate value
+        @param [sY] start point Y coordinate value
     * */
-    static public Bitmap processImage(float _gesture, int option) {
+    static public Bitmap processImage(float _x, float _y, int option, Context context, float sX, float sY) {
         Bitmap bm = null;
-        int gesture = (_gesture < 0)?-1:1;
+        int y = (_y < 0)?-1:1;
+        int x = (_x < 0)?-1:1;
 
         if (option == 0) {                  // choose process hue
             float hueValue = MyBitmap.getHueValue();
-            hueValue += 3 * gesture;
+            hueValue += 1 * y;
+            hueValue = (hueValue <= 0 ? 0.1f : hueValue);
             MyBitmap.setHueValue(hueValue);
             bm = HueProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), hueValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
         } else if (option == 1) {           // choose process saturation
             float satValue = MyBitmap.getSatValue();
-            satValue += 3 * gesture;
+            satValue += 1 * y;
             satValue = (satValue <= 0 ? 0.1f : satValue);
             MyBitmap.setSatValue(satValue);
             bm = SaturationProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), satValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
         } else if (option == 2) {           // choose process luminance
             float lumValue = MyBitmap.getLumValue();
-            lumValue += 3 * gesture;
+            lumValue += 1 * y;
             lumValue = (lumValue <= 0 ? 0.1f : lumValue);
             MyBitmap.setLumValue(lumValue);
             bm = LuminanceProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), lumValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
         } else if (option == 3) {           // choose process rotation
             float rotValue = MyBitmap.getRotValue();
-            rotValue += 5 * gesture;
+            int rotateOrientation = getRotateOrient(x, y, sX, sY, context);
+            // int rotateOrientation = y;
+            rotValue += 5 * rotateOrientation;
             MyBitmap.setRotValue(rotValue);
             bm = RotationProcess.process(Bitmap.createBitmap(MyBitmap.getOrigin()), rotValue);
             MyBitmap.setBmp(Bitmap.createBitmap(bm));
         } else if (option == 4) {
-            if (gesture < 0) {// choose convert X
+            if (Math.abs(_x) > Math.abs(_y)) {// choose convert X
                 bm = ConvertXProcess.process(MyBitmap.getBmp());
                 MyBitmap.setBmp(Bitmap.createBitmap(bm));
             } else {
@@ -62,7 +71,7 @@ public class ProcessImageFactory {
             }
         }  else if (option == 5) {           // choose blur
             int raidus = MyBitmap.getRaidus();
-            raidus += 1 * gesture;
+            raidus += 1 * y;
             raidus = (raidus <= 0 ? 1 : raidus);
             MyBitmap.setRaidus(raidus);
             if (raidus != 1) {
@@ -77,5 +86,37 @@ public class ProcessImageFactory {
             bm = Bitmap.createBitmap(MyBitmap.getBmp());
         }
         return bm;
+    }
+
+    static private int getRotateOrient(int x, int y, float sX, float sY, Context ctx) {
+        WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+
+        if (sX < width / 2 && sY < height / 2) {
+            if (x > 0 && y < 0) return 1;
+            if (x < 0 && y > 0) return -1;
+            if (x > 0 && y > 0) return -1;
+            else return 1;
+        }
+        if (sX < width / 2 && sY >= height / 2) {
+            if (x > 0 && y > 0) return -1;
+            if (x < 0 && y < 0) return 1;
+            if (x > 0 && y < 0) return 1;
+            else return -1;
+        }
+        if (sX >= width / 2 && sY < height / 2) {
+            if (x > 0 && y > 0) return 1;
+            if (x < 0 && y < 0) return -1;
+            if (x > 0 && y < 0) return 1;
+            else return -1;
+        }
+        if (sX >= width / 2 && sY >= height / 2) {
+            if (x > 0 && y < 0) return -1;
+            if (x < 0 && y > 0) return 1;
+            if (x < 0 && y < 0) return 1;
+            else return -1;
+        }
+        return 0;
     }
 }
