@@ -1,8 +1,7 @@
-package com.example.alienware.fantasy_image;
+package com.example.alienware.fantasy_image.ImageProcessMethod;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
