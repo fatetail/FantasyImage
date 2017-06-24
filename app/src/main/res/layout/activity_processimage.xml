@@ -7,12 +7,12 @@
     android:gravity="fill"
     >
     <ImageView
+        android:id="@+id/process_image_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:id="@+id/process_image_view"
-        android:src="@mipmap/pic"
         android:scaleType="fitCenter"
+        android:src="@mipmap/pic"
         />
 
     <LinearLayout
