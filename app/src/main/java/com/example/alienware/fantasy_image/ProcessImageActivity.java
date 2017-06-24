@@ -199,4 +199,29 @@ public class ProcessImageActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Dialog builder = new AlertDialog.Builder(ProcessImageActivity.this).setTitle("是否保存?")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int k) {
+                        MyBitmap.setOrigin(MyBitmap.getBmp());
+                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int k) {
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(ProcessImageActivity.this, PickImageActivity.class);
+                        startActivity(intent);
+                    }
+                }).create();
+        builder.show();
+    }
 }
