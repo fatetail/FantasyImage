@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.alienware.fantasy_image.Bean.PassedData;
@@ -56,7 +59,10 @@ public class ProcessImageActivity extends AppCompatActivity {
         cancel_button = (Button) findViewById(R.id.cancel);
         process_image_view = (ImageView) findViewById(R.id.process_image_view);
         bitmap = MyBitmap.getBmp();
-        process_image_view.setImageBitmap(bitmap);
+        Drawable drawable = new BitmapDrawable(bitmap);
+        process_image_view.setBackground(drawable);
+        process_image_view.setImageBitmap(null);
+        process_image_view.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
     /*设置监听*/

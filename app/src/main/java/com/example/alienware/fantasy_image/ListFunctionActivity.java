@@ -26,7 +26,7 @@ public class ListFunctionActivity extends AppCompatActivity {
 
     /*声明List和String*/
     private List<Map<String,Object>> list_data = new ArrayList<>();
-    private String[] function_names = new String[] {"图像色调","图像饱和度","图像透明度","图像亮度","图像旋转","图像水平镜像旋转","图像垂直镜像旋转","高斯模糊","滤镜"};
+    private String[] function_names = new String[] {"色调","饱和度","透明度","亮度","旋转","水平镜像旋转","垂直镜像旋转","高斯模糊","滤镜"};
 
     /*图像功能默认参数值*/
     private float hueValue = 3;

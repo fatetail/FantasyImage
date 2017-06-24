@@ -7,16 +7,23 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -133,7 +140,11 @@ public class PickImageActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             Bitmap bitmap = bundle.getParcelable("data");
-            pick_image_view.setImageBitmap(bitmap);
+            pick_image_view.setScaleType(ImageView.ScaleType.FIT_XY);
+            Drawable drawable = new BitmapDrawable(bitmap);
+            pick_image_view.setBackground(drawable);
+            pick_image_view.setImageBitmap(null);
+
             MyBitmap.setBmp(bitmap);
             MyBitmap.setOrigin(bitmap);
         }
