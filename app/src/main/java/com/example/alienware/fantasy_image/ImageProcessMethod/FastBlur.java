@@ -1,6 +1,7 @@
 package com.example.alienware.fantasy_image.ImageProcessMethod;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * Created by paveld on 2014/3/6

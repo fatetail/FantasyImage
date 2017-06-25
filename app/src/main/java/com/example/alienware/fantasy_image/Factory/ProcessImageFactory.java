@@ -75,7 +75,7 @@ public class ProcessImageFactory {
             raidus = (raidus <= 0 ? 1 : raidus);
             MyBitmap.setRaidus(raidus);
             if (raidus != 1) {
-                Bitmap temp = Bitmap.createBitmap(Bitmap.createBitmap(MyBitmap.getOrigin()));
+                Bitmap temp = MyBitmap.getOrigin().copy(MyBitmap.getOrigin().getConfig(), true);
                 bm = BlurProcess.process(temp, raidus);
                 MyBitmap.setBmp(Bitmap.createBitmap(bm));
             } else {
