@@ -6,9 +6,9 @@ import android.util.Log;
 
 import com.example.alienware.fantasy_image.FilterMethod.CartoonFilter;
 import com.example.alienware.fantasy_image.FilterMethod.ComicFilter;
+import com.example.alienware.fantasy_image.FilterMethod.CrystalBallFilter;
 import com.example.alienware.fantasy_image.FilterMethod.EmbossFilter;
 import com.example.alienware.fantasy_image.FilterMethod.KuwaharaFilter;
-import com.example.alienware.fantasy_image.FilterMethod.ShadowFilter;
 import com.example.alienware.fantasy_image.FilterMethod.SketchFilter;
 import com.example.alienware.fantasy_image.MyBitmap;
 
@@ -38,9 +38,9 @@ public class FilterFactory {
             bm = KuwaharaFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
             Log.i("FilterFactory","kuwahara end processing");
         } else if (option == 10) {
-            Log.i("FilterFactory","shadow start processing");
-            bm = ShadowFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
-            Log.i("FilterFactory","shadow end processing");
+            Log.i("FilterFactory","crystal ball start processing");
+            bm = CrystalBallFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));
+            Log.i("FilterFactory","crystal ball end processing");
         } else if (option == 11) {
             Log.i("FilterFactory","sketch start processing");
             bm = SketchFilter.process(context, Bitmap.createBitmap(MyBitmap.getBmp()));

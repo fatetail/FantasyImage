@@ -6,6 +6,9 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by Zhanglq on 2017/6/9.
@@ -241,8 +244,9 @@ public class ImageProcess {
                 w = (int)(bm.getWidth() / 1.5);
                 h = (int)(bm.getHeight() / 1.5);
             }
-            bm = resizeProcess(bm, w, h);
+            bm = resizeProcess(bm, w, h).copy(bm.getConfig(), true);
         }
+
         //对图像进行高斯模糊，true表示覆盖原位图
         return FastBlur.doBlur(bm, radius, true);
     }
